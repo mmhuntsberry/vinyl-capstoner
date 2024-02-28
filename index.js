@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
+const cors = require('cors')
 const { v4: uuidv4 } = require('uuid');
 require("dotenv").config();
 
 const pool = require("./sql/connection");
 
 const PORT = 8888;
+
+app.use(cors());
 // middleware to read body text from REST API
 app.use(express.json())
 
@@ -38,7 +41,7 @@ app.get("/vinyl/:id", (req, res) => {
   const query = 'SELECT * FROM ?? WHERE id = ?';
   const params = ['vinyl', id];
   const { id } = req.params;
-  
+
   pool.query(query, params, (err, rows, fields) => {
     res.json(rows)
   }); 
